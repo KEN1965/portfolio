@@ -144,10 +144,10 @@
       }
       .sec-head p { margin: 0; color: var(--ink-soft); max-width: 36em; }
 
-      /* Services — 2 columns on phones, 4 in a row on PC.
+      /* Services — 3 columns on both PC and phones.
          Compact: big vivid icon badge + SERVICE label + title + jump link only. */
-      .services { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); align-items: stretch; }
-      @media (min-width: 900px) { .services { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+      .services { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+      @media (min-width: 900px) { .services { gap: 16px; } }
       .service {
         background: var(--card);
         color: var(--card-ink);
@@ -174,6 +174,13 @@
         margin: 5px 0 0;
         line-height: 1.45;
       }
+      /* Service titles: short wording on phones (≤899px),
+         long wording on PC (≥900px) — layout stays 3 columns. */
+      .service h3 .svc-long { display: none; }
+      @media (min-width: 900px) {
+        .service h3 .svc-long { display: inline; }
+        .service h3 .svc-short { display: none; }
+      }
       .service p { margin: 0; color: var(--ink-soft); font-size: 15px; }
       .service .glyph {
         width: 52px; height: 52px;
@@ -185,16 +192,17 @@
       }
       .service .glyph svg { width: 30px; height: 30px; stroke-width: 2.1; }
       .services .service:nth-child(1) .glyph { background: linear-gradient(135deg, #eda25e 0%, #e08a76 100%); box-shadow: none; }
-      .services .service:nth-child(2) .glyph { background: linear-gradient(135deg, #a78fc9 0%, #c08bb4 100%); box-shadow: none; }
-      .services .service:nth-child(3) .glyph { background: linear-gradient(135deg, #6fae8d 0%, #93bd7d 100%); box-shadow: none; }
-      .services .service:nth-child(4) .glyph { background: linear-gradient(135deg, #6f9fd0 0%, #6faec2 100%); box-shadow: none; }
+      .services .service:nth-child(2) .glyph { background: linear-gradient(135deg, #6fae8d 0%, #93bd7d 100%); box-shadow: none; }
+      .services .service:nth-child(3) .glyph { background: linear-gradient(135deg, #6f9fd0 0%, #6faec2 100%); box-shadow: none; }
       @media (max-width: 899px) {
-        .service { padding: 14px 13px 12px; }
-        .service .glyph { width: 46px; height: 46px; margin-bottom: 10px; }
-        .service .glyph svg { width: 26px; height: 26px; }
-        .service h3 { font-size: 15.5px; line-height: 1.5; }
-        .service .num { font-size: 11px; }
-        .service .service-link .work-link { font-size: 13px; }
+        .services { gap: 8px; }
+        .service { padding: 12px 10px 10px; min-width: 0; }
+        .service .glyph { width: 40px; height: 40px; margin-bottom: 8px; }
+        .service .glyph svg { width: 22px; height: 22px; }
+        .service h3 { font-size: 14px; line-height: 1.45; overflow-wrap: break-word; }
+        .service .num { font-size: 10.5px; letter-spacing: 0.08em; }
+        .service .service-link { font-size: 12px; }
+        .service .service-link .work-link { font-size: 12px; gap: 4px; }
       }
 
       /* Works */
@@ -394,8 +402,26 @@
          would override the hidden attribute — without this, a hidden
          brand bar inside a detail would still render. */
       .fx-detail [hidden] { display: none !important; }
-      .fx-ov-hero { border-radius: 16px; min-height: 210px; }
-      .fx-ov-hero .big { font-size: clamp(20px, 6vw, 40px); white-space: nowrap; }
+      /* Detail heroes use the exact same title treatment as the
+         settled list cards (.works-own / .works-support above),
+         whatever the band colour:
+         — placement: the label + title block is centred vertically
+           in the band (justify-content: center);
+         — spacing: the padding is identical (18px, with 26px on
+           the left), so the corner brackets — which sit in the
+           band's corners, clear of the centred block — never cross
+           the title text;
+         — size: the title uses the identical sizing rule as the
+           list cards (18px fallback, then 6.2cqw of the band's own
+           width — the hero is a container so cqw resolves against
+           it, exactly as it resolves against each list card).
+         Previously the heroes inherited .work-visual's bottom
+         alignment (justify-content: flex-end), 22px side padding
+         and a clamp()/vw size, which dropped the title onto the
+         bottom-left bracket at a different size from every card. */
+      .fx-ov-hero { border-radius: 16px; min-height: 210px; justify-content: center; padding: 18px 18px 18px 26px; container-type: inline-size; }
+      .fx-ov-hero .en { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10.5px; }
+      .fx-ov-hero .big { font-size: 18px; font-size: 6.2cqw; white-space: nowrap; }
       .fx-ov-lead { margin: 22px 0 0; color: var(--ink-soft); font-size: 15.5px; max-width: 42em; }
       /* Detail grids for Instagram / TikTok / Adobe Aero only
          (the only three details that use .fx-ov-grid — the dance
@@ -541,6 +567,47 @@
         border-radius: 14px; padding: 16px 20px; font-size: 14.5px; color: var(--ink-soft);
       }
       .fx-ov-actions { margin-top: 22px; }
+
+      /* SuperSplat detail: one large responsive viewer (16:10,
+         matching the embed's 800×500) plus four work buttons
+         underneath. A single iframe shows the selected work and
+         the buttons switch its src, so only one scene loads at a
+         time; the selected button is filled dark blue. */
+      .ss-viewer {
+        margin-top: 24px;
+        aspect-ratio: 8 / 5;
+        border-radius: 14px;
+        background: #0d2138;
+        overflow: hidden;
+      }
+      .ss-viewer iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+      .ss-slots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+      @media (min-width: 900px) { .ss-slots { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+      .ss-slot {
+        appearance: none;
+        -webkit-appearance: none;
+        font: inherit;
+        cursor: pointer;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 10px;
+        min-height: 52px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink-soft);
+        background: var(--card);
+      }
+      .ss-slot[aria-pressed="true"] {
+        background: var(--deep);
+        border-color: var(--deep);
+        color: #fff;
+      }
 
       /* 3DGS gallery full-screen overlay: the gallery's card in
          自分の作品 opens the working gallery itself (#gxRoot, moved
@@ -885,9 +952,18 @@
         background: var(--gx-btn); color: var(--gx-btn-ink);
         border-radius: 6px; padding: 5px 10px; margin-bottom: 12px;
       }
+      /* Gallery title treatment is unified across the gallery's
+         screens: the gallery name here, both screen titles
+         (.vhead h4 — 展示作品 / 管理画面) and the work title
+         (.feature h5) all share one rule — Shippori Mincho,
+         weight 800, letter-spacing .04em and the single size
+         formula clamp(25px, 4.6vw, 34px). Admin section titles
+         (.panel h5, .pin-card h5) likewise share one 19px rule,
+         and the viewing-room work title is 17px/700 in both the
+         top bar and the plaque. Appearance only — no behaviour. */
       .gx-head h3 {
         font-family: "Shippori Mincho B1", serif; font-weight: 800;
-        font-size: clamp(24px, 5.6vw, 30px); margin: 0 0 8px; line-height: 1.4;
+        font-size: clamp(25px, 4.6vw, 34px); letter-spacing: .04em; margin: 0 0 8px; line-height: 1.25;
       }
       .gx-head p { margin: 0 0 10px; color: var(--gx-ink-2); font-size: 15px; max-width: 44em; }
       .gx-inner { padding: 0 20px 40px; }
@@ -970,7 +1046,7 @@
       .gx .feature .fbody { padding: 28px 30px 30px; display: flex; flex-direction: column; gap: 12px; }
       .gx .feature h5 {
         font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
-        font-size: clamp(25px, 3.4vw, 34px); font-weight: 700; margin: 0; letter-spacing: .03em; line-height: 1.35;
+        font-size: clamp(25px, 4.6vw, 34px); font-weight: 800; margin: 0; letter-spacing: .04em; line-height: 1.35;
       }
       .gx .feature .fmeta { font-size: 12.5px; color: var(--gx-accent-text); letter-spacing: .06em; font-weight: 700; margin: 0; }
       .gx .feature .fdesc { font-size: 15px; color: var(--gx-ink-2); margin: 0; flex: 1; white-space: pre-wrap; }
@@ -1140,7 +1216,7 @@
       }
       .gx .pin-card h5 {
         font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
-        font-size: 20px; font-weight: 700; letter-spacing: .04em; margin: 0 0 8px;
+        font-size: 19px; font-weight: 700; letter-spacing: .05em; margin: 0 0 8px;
       }
       .gx .pin-card > p { font-size: 13.5px; color: var(--gx-ink-2); margin: 0 0 18px; }
       .gx .pin-card .fld input { text-align: center; font-size: 22px; letter-spacing: .35em; }
@@ -1462,6 +1538,64 @@
             <p class="fx-ov-lead">専用のiPhoneカメラアプリでダンサーを撮影すると、その場でリアルタイムにエフェクトが出る自作システム。ウェブとiPhoneを繋げた仕組みで、パフォーマンスと映像を融合させる仕掛けとして、現在開発中です。</p>
             <p class="fx-ov-note">現在開発中です。</p>
             <div class="fx-ov-actions"><a class="work-link" href="https://www.instagram.com/p/DcKsHqThvaB/">Instagramで動画を見る <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          </div>
+</div>
+
+          <div class="fx-detail" id="detail-3dscan" hidden role="dialog" aria-modal="true" aria-label="3Dスキャンの詳細">
+            <div class="fx-ov-bar">
+              <button type="button" class="fx-ov-close" data-fx-close>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                一覧に戻る
+              </button>
+            </div>
+            <div class="fx-ov-inner">
+            <div class="work-visual fx-ov-hero v-indigo">
+              <span class="dots"></span><span class="frame tl"></span><span class="frame tr"></span><span class="frame bl"></span><span class="frame br"></span>
+              <span class="en">3D SCAN</span>
+              <span class="big">3Dスキャン</span>
+            </div>
+            <p class="fx-ov-lead">3Dスキャンした作品は、2つの方法で見られます。</p>
+            <div class="fx-ov-grid">
+              <article class="fx-item">
+                <h4>3DGSギャラリー</h4>
+                <p>自分で開発した3DGSギャラリーです。管理画面もそのまま操作できます。</p>
+                <button type="button" class="work-link" data-gx-open>ギャラリーを開く
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </article>
+              <article class="fx-item">
+                <h4>SuperSplat</h4>
+                <p>SuperSplatで公開した3DGS作品をまとめて見られます。</p>
+                <button type="button" class="work-link" data-fx-open="supersplat">作品を見る
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </article>
+            </div>
+          </div>
+</div>
+
+          <div class="fx-detail" id="detail-supersplat" hidden role="dialog" aria-modal="true" aria-label="SuperSplatの詳細">
+            <div class="fx-ov-bar">
+              <button type="button" class="fx-ov-close" data-fx-close>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                3Dスキャンに戻る
+              </button>
+            </div>
+            <div class="fx-ov-inner">
+            <div class="work-visual fx-ov-hero v-teal">
+              <span class="dots"></span><span class="frame tl"></span><span class="frame tr"></span><span class="frame bl"></span><span class="frame br"></span>
+              <span class="en">SUPERSPLAT — 3DGS VIEWER</span>
+              <span class="big">SuperSplat</span>
+            </div>
+            <div class="ss-viewer">
+              <iframe id="ssFrame" title="SuperSplat 3Dビューア" allow="fullscreen; xr-spatial-tracking" allowfullscreen></iframe>
+            </div>
+            <div class="ss-slots" role="group" aria-label="SuperSplatの作品を選ぶ">
+              <button type="button" class="ss-slot" data-ss-src="https://superspl.at/s?id=adc2f7c7" aria-pressed="true">基町プロジェクト</button>
+              <button type="button" class="ss-slot" data-ss-src="https://superspl.at/s?id=604e2ac6" aria-pressed="false">森の街のアトリエ</button>
+              <button type="button" class="ss-slot" data-ss-src="https://superspl.at/s?id=b99d2a19" aria-pressed="false">呉駅裏の公園</button>
+              <button type="button" class="ss-slot" data-ss-src="https://superspl.at/s?id=86ca185e" aria-pressed="false">ガラスのうさぎ</button>
+            </div>
           </div>
 </div>
 
@@ -1870,6 +2004,30 @@
       </ul>
           </div>
 </div>
+<div class="fx-detail" id="detail-app-workout" hidden role="dialog" aria-modal="true" aria-label="Workout Timerの詳細">
+            <div class="fx-ov-bar">
+              <button type="button" class="fx-ov-close" data-fx-close>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                一覧に戻る
+              </button>
+            </div>
+            <div class="fx-ov-inner">
+            <div class="app-dhead">
+              <img class="app-icon" src="data:image/png;base64,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" alt="Workout Timerのアイコン（濃い背景に緑色のストップウォッチの図柄）" width="88" height="88" loading="lazy" />
+              <div>
+                <h3 class="app-dtitle">Workout Timer</h3>
+                <div class="work-meta"><span class="chip solid">Webアプリ</span><span class="chip">公開中</span></div>
+              </div>
+            </div>
+            <p class="detail-lead">ワークアウト用のインターバルタイマーです。運動（ワーク）と休憩（レスト）の時間と、セット（ラウンド）の繰り返しを設定して使えます。プリセットとカスタム設定に対応し、切り替えは音で知らせます。ブラウザで開くWebアプリなので、インストールは要りません。</p>
+      <ul class="spec-list">
+        <li><span class="spec-label">対応</span><span class="spec-value">Webブラウザ</span></li>
+        <li><span class="spec-label">種別</span><span class="spec-value">Webアプリ</span></li>
+        <li><span class="spec-label">状態</span><span class="spec-value">公開中</span></li>
+      </ul>
+      <p class="detail-actions"><a class="btn btn-primary" href="https://ken1965.github.io/portfolio/Interval_timer.html" target="_blank" rel="noopener">タイマーを使う</a></p>
+          </div>
+</div>
 <div class="fx-detail" id="detail-app-letstriage" hidden role="dialog" aria-modal="true" aria-label="Let'sTriageの詳細">
             <div class="fx-ov-bar">
               <button type="button" class="fx-ov-close" data-fx-close>
@@ -2112,18 +2270,8 @@
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg>
             </div>
             <span class="num">SERVICE 01</span>
-            <h3>作品・場所の3Dスキャン／3DGS化</h3>
-            <p class="service-link"><a class="work-link" href="#gxCard" data-goto-cat="own">3DGSギャラリーを見る
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a></p>
-          </article>
-          <article class="service reveal">
-            <div class="glyph">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10.8 18.6h2.4"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z" fill="currentColor" stroke="none"/></svg>
-            </div>
-            <span class="num">SERVICE 02</span>
-            <h3>AR体験づくり</h3>
-            <p class="service-link"><a class="work-link" href="#works" data-goto-cat="own">自分の作品を見る
+            <h3><span class="svc-short">3Dスキャン</span><span class="svc-long">作品・場所の3Dスキャン／3DGS化</span></h3>
+            <p class="service-link"><a class="work-link" href="#scanCard" data-goto-cat="own" data-open-scan>3DGSギャラリーを見る
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a></p>
           </article>
@@ -2131,8 +2279,8 @@
             <div class="glyph">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s-6.8-4.6-6.8-10A6.8 6.8 0 0 1 12 4.4 6.8 6.8 0 0 1 18.8 11c0 5.4-6.8 10-6.8 10z"/><circle cx="12" cy="11" r="2.4"/></svg>
             </div>
-            <span class="num">SERVICE 03</span>
-            <h3>イベント出店・ワークショップ</h3>
+            <span class="num">SERVICE 02</span>
+            <h3><span class="svc-short">イベント</span><span class="svc-long">AR体験・イベント</span></h3>
             <p class="service-link"><a class="work-link" href="#works" data-goto-cat="event">イベントを見る
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a></p>
@@ -2141,8 +2289,8 @@
             <div class="glyph">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M10.6 18.7h2.8"/><path d="M10.2 8.4L8.2 10.6l2 2.2M13.8 8.4l2 2.2-2 2.2"/></svg>
             </div>
-            <span class="num">SERVICE 04</span>
-            <h3>iPhoneアプリ／ウェブアプリ開発</h3>
+            <span class="num">SERVICE 03</span>
+            <h3><span class="svc-short">アプリ開発</span><span class="svc-long">iPhoneアプリ／ウェブアプリ開発</span></h3>
             <p class="service-link"><a class="work-link" href="#works" data-goto-cat="apps">アプリ事例を見る
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a></p>
@@ -2227,15 +2375,15 @@
                 </span>
               </span>
             </button>
-            <button type="button" class="work reveal" id="gxCard" data-gx-open>
+            <button type="button" class="work reveal" id="scanCard" data-fx-open="3dscan">
               <span class="work-visual v-indigo">
                 <span class="dots"></span><span class="frame tl"></span><span class="frame tr"></span><span class="frame bl"></span><span class="frame br"></span>
-                <span class="en">3DGS GALLERY — PLAYABLE TRIAL</span>
-                <span class="big">3DGSギャラリー</span>
+                <span class="en">3D SCAN</span>
+                <span class="big">3Dスキャン</span>
               </span>
               <span class="work-body">
-                <span class="wdesc">3DGS作品のための自作ギャラリー（ビューア）です。</span>
-                <span class="work-link">タップでギャラリーを開く
+                <span class="wdesc">自作ギャラリーとSuperSplatの入口です</span>
+                <span class="work-link">タップで詳しく見る
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </span>
               </span>
@@ -2415,6 +2563,17 @@
                   <span class="expand-hint">App Storeで見る<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                   </span>
               </a>
+            </li>
+            <li>
+              <button type="button" class="app-row app-card reveal" data-fx-open="app-workout">
+                <img class="app-icon" src="data:image/png;base64,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" alt="Workout Timerのアイコン（濃い背景に緑色のストップウォッチの図柄）" width="88" height="88" loading="lazy" />
+                <span class="app-main">
+                  <span class="app-name">Workout Timer</span>
+                  <span class="app-status st-live">公開中</span>
+                  <span class="app-desc">運動と休憩を繰り返すインターバルタイマー（Webアプリ）</span>
+                  <span class="expand-hint">タップで詳しく見る<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                  </span>
+              </button>
             </li>
           </ul>
 
@@ -3017,11 +3176,20 @@
       (function () {
         var openEl = null;
         var lastFocus = null;
+        // A detail opened from inside another detail (3Dスキャン →
+        // SuperSplat) stacks on top of it: closing the child unhides
+        // the parent detail again instead of returning to the list.
+        // Top-level details never stack (the stack stays empty), so
+        // every existing detail behaves exactly as before.
+        var pageStack = [];
 
         function openPage(key) {
           var d = document.getElementById('detail-' + key);
-          if (!d) return;
-          if (openEl && openEl !== d) openEl.hidden = true;
+          if (!d || d === openEl) return;
+          if (openEl) {
+            pageStack.push({ el: openEl, focus: lastFocus, scroll: openEl.scrollTop });
+            openEl.hidden = true;
+          }
           openEl = d;
           lastFocus = document.activeElement;
           d.hidden = false;
@@ -3033,10 +3201,20 @@
 
         function closePage() {
           if (!openEl) return;
+          var backTo = lastFocus;
           openEl.hidden = true;
           openEl = null;
+          if (pageStack.length) {
+            var prev = pageStack.pop();
+            openEl = prev.el;
+            lastFocus = prev.focus;
+            openEl.hidden = false;
+            openEl.scrollTop = prev.scroll;
+            if (backTo && backTo.focus) backTo.focus();
+            return;
+          }
           document.body.classList.remove('fx-locked');
-          if (lastFocus && lastFocus.focus) lastFocus.focus();
+          if (backTo && backTo.focus) backTo.focus();
         }
 
         var openers = document.querySelectorAll('[data-fx-open]');
@@ -3050,7 +3228,59 @@
           closers[j].addEventListener('click', closePage);
         }
         document.addEventListener('keydown', function (e) {
-          if (openEl && (e.key === 'Escape' || e.key === 'Esc')) closePage();
+          if (!openEl || (e.key !== 'Escape' && e.key !== 'Esc')) return;
+          // The 3DGS gallery can sit above a detail (opened from the
+          // 3Dスキャン detail): its own Esc handling closes it first,
+          // so the detail underneath must not close with it.
+          var gxOv = document.getElementById('gxOverlay');
+          if (gxOv && !gxOv.hidden) return;
+          closePage();
+        });
+      })();
+    </script>
+    <script>
+      // --- SuperSplat detail: one iframe, four works. Opening the
+      // detail (re)selects the first work （基町プロジェクト） and
+      // loads it; the work buttons switch that same iframe's src,
+      // so only the selected scene is ever loaded.
+      (function () {
+        var frame = document.getElementById('ssFrame');
+        var slots = document.querySelectorAll('.ss-slot[data-ss-src]');
+        if (!frame || !slots.length) return;
+
+        function select(i) {
+          for (var k = 0; k < slots.length; k++) {
+            slots[k].setAttribute('aria-pressed', k === i ? 'true' : 'false');
+          }
+          var src = slots[i].getAttribute('data-ss-src');
+          if (frame.getAttribute('src') !== src) frame.setAttribute('src', src);
+        }
+        for (var i = 0; i < slots.length; i++) {
+          (function (idx) {
+            slots[idx].addEventListener('click', function () { select(idx); });
+          })(i);
+        }
+        var openers = document.querySelectorAll('[data-fx-open="supersplat"]');
+        for (var j = 0; j < openers.length; j++) {
+          openers[j].addEventListener('click', function () { select(0); });
+        }
+      })();
+    </script>
+    <script>
+      // --- SERVICE 01 jump: land on the 3Dスキャン card with its
+      // detail already open. The category switch is handled by the
+      // link's data-goto-cat (registered earlier) and the anchor
+      // href scrolls the page to the card; this handler then opens
+      // the detail. The card is focused first, so the detail
+      // system's close returns focus — and with it the view — to
+      // the 3Dスキャン card.
+      (function () {
+        var link = document.querySelector('[data-open-scan]');
+        var card = document.getElementById('scanCard');
+        if (!link || !card) return;
+        link.addEventListener('click', function () {
+          if (card.focus) card.focus();
+          card.click();
         });
       })();
     </script>
@@ -4003,8 +4233,14 @@
           window.scrollTo(0, gxSavedScrollY);
           if (gxLastFocus && gxLastFocus.focus) gxLastFocus.focus();
         }
-        var gxCardEl = document.getElementById('gxCard');
-        if (gxCardEl) gxCardEl.addEventListener('click', openGxOverlay);
+        // Every [data-gx-open] element opens the gallery — now the
+        // 「ギャラリーを開く」 button inside the 3Dスキャン detail.
+        // The detail stays open underneath, so closing the gallery
+        // returns to that detail, not to the list.
+        var gxOpeners = document.querySelectorAll('[data-gx-open]');
+        for (var gxOi = 0; gxOi < gxOpeners.length; gxOi++) {
+          gxOpeners[gxOi].addEventListener('click', openGxOverlay);
+        }
         if (gxOvCloseBtn) gxOvCloseBtn.addEventListener('click', closeGxOverlay);
         document.addEventListener('keydown', function (e) {
           if (e.key !== 'Escape' && e.key !== 'Esc') return;
