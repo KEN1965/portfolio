@@ -132,6 +132,119 @@
       .btn-ghost { border: 1.5px solid var(--ink); background: transparent; }
       .btn svg { flex: none; }
 
+      /* ---------- News ticker (お知らせテロップ) ----------
+         Minimal, in the page's own grammar: white ground, hairline
+         rules in deep blue, the hero's mono English label at the
+         left, a Shippori Mincho line drifting slowly through the
+         middle (faded out at both edges), and a small fixed
+         sign-up cue at the right in the same label manner. */
+      .news-ticker {
+        display: flex;
+        align-items: center;
+        height: 46px;
+        background: #fff;
+        color: var(--ink);
+        text-decoration: none;
+        overflow: hidden;
+        border-top: 1px solid rgba(11, 77, 162, 0.38);
+        border-bottom: 1px solid rgba(11, 77, 162, 0.38);
+      }
+      .news-ticker-label {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: max(20px, calc((100% - 960px) / 2 + 20px));
+        padding-right: 18px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.26em;
+        line-height: 1.4;
+        color: var(--accent);
+        white-space: nowrap;
+        position: relative;
+        z-index: 1;
+      }
+      .news-ticker-label::before {
+        content: "";
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+      .news-ticker-viewport {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        align-self: stretch;
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+      }
+      .news-ticker-track {
+        display: flex;
+        flex: none;
+        white-space: nowrap;
+        will-change: transform;
+        animation: news-ticker-scroll 56s linear infinite;
+      }
+      .news-ticker:hover .news-ticker-track,
+      .news-ticker:active .news-ticker-track,
+      .news-ticker:focus-visible .news-ticker-track { animation-play-state: paused; }
+      .news-ticker-half { display: flex; flex: none; }
+      .news-ticker-text {
+        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        line-height: 1.5;
+        color: var(--ink);
+        padding-right: 6.5em;
+      }
+      .news-ticker-cta {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-left: 14px;
+        padding-right: max(20px, calc((100% - 960px) / 2 + 20px));
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        line-height: 1.4;
+        color: var(--accent);
+        white-space: nowrap;
+        position: relative;
+        z-index: 1;
+      }
+      .news-ticker-cta .nt-arrow { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+      .news-ticker:hover .news-ticker-cta,
+      .news-ticker:focus-visible .news-ticker-cta { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+      .news-ticker:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+      @keyframes news-ticker-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      @media (min-width: 760px) {
+        .news-ticker-text { font-size: 16px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .news-ticker-track { animation: none; }
+      }
+      @media (max-width: 560px) {
+        .news-ticker { height: 44px; }
+        .news-ticker-label { padding-left: 14px; padding-right: 10px; font-size: 10px; letter-spacing: 0.2em; gap: 6px; }
+        .news-ticker-label::before { width: 5px; height: 5px; }
+        .news-ticker-viewport {
+          -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+        }
+        .news-ticker-text { font-size: 14px; padding-right: 5em; }
+        .news-ticker-cta { padding-left: 8px; padding-right: 14px; font-size: 11px; letter-spacing: 0.04em; gap: 4px; }
+      }
+
       /* ---------- Sections ---------- */
       section { padding: 56px 0 8px; }
       .sec-head { margin-bottom: 26px; }
@@ -2274,6 +2387,24 @@
         </div>
       </div>
     </header>
+
+    <!-- ============ お知らせテロップ ============ -->
+    <a class="news-ticker" href="https://peatix.com/event/5273079" target="_blank" rel="noopener" aria-label="お知らせ：第4回 AI体験会、12月5日（土）14:00–16:00、くれ協働センター、申込受付中 — Peatixの申込ページを開きます">
+      <span class="news-ticker-label">NEWS</span>
+      <span class="news-ticker-viewport" aria-hidden="true">
+        <span class="news-ticker-track">
+          <span class="news-ticker-half">
+            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+          </span>
+          <span class="news-ticker-half">
+            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+          </span>
+        </span>
+      </span>
+      <span class="news-ticker-cta" aria-hidden="true">Peatixで申込<span class="nt-arrow">→</span></span>
+    </a>
 
     <main class="wrap">
       <!-- ============ できること ============ -->
