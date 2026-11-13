@@ -203,6 +203,17 @@
         color: var(--ink);
         padding-right: 6.5em;
       }
+      /* Ticker wording by width — the same 900px split as the
+         service-card titles (.svc-long / .svc-short): phones
+         (≤899px) show the short line, PC (≥900px) shows the full
+         line with time and place. Every repeat carries both
+         variants, so whichever is shown, both track halves stay
+         identical and the -50% loop stays seamless. */
+      .news-ticker-text .nt-long { display: none; }
+      @media (min-width: 900px) {
+        .news-ticker-text .nt-long { display: inline; }
+        .news-ticker-text .nt-short { display: none; }
+      }
       .news-ticker-cta {
         flex: none;
         display: flex;
@@ -2389,17 +2400,17 @@
     </header>
 
     <!-- ============ お知らせテロップ ============ -->
-    <a class="news-ticker" href="https://peatix.com/event/5273079" target="_blank" rel="noopener" aria-label="お知らせ：第4回 AI体験会、12月5日（土）14:00–16:00、くれ協働センター、申込受付中 — Peatixの申込ページを開きます">
+    <a class="news-ticker" href="https://peatix.com/event/5273079" target="_blank" rel="noopener" aria-label="お知らせ：第4回 AI体験会、12月5日（土）、申込受付中 — Peatixの申込ページを開きます">
       <span class="news-ticker-label">NEWS</span>
       <span class="news-ticker-viewport" aria-hidden="true">
         <span class="news-ticker-track">
           <span class="news-ticker-half">
-            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
-            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+            <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
+            <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
           </span>
           <span class="news-ticker-half">
-            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
-            <span class="news-ticker-text">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span>
+            <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
+            <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
           </span>
         </span>
       </span>
