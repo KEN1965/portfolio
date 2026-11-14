@@ -243,6 +243,8 @@
       .news-ticker:hover .news-ticker-cta,
       .news-ticker:focus-visible .news-ticker-cta { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
       .news-ticker:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+      /* Two bands stack as one notice block: no gap, no doubled rule between them. */
+      .news-ticker + .news-ticker { border-top: none; }
       @keyframes news-ticker-scroll {
         from { transform: translateX(0); }
         to { transform: translateX(-50%); }
@@ -2420,6 +2422,22 @@
           <span class="news-ticker-half">
             <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
             <span class="news-ticker-text"><span class="nt-short">第4回 AI体験会 ｜ 12月5日（土）｜ 申込受付中</span><span class="nt-long">第4回 AI体験会 ｜ 12月5日（土）14:00–16:00 ｜ くれ協働センター ｜ 申込受付中</span></span>
+          </span>
+        </span>
+      </span>
+      <span class="news-ticker-cta" aria-hidden="true">Peatixで申込<span class="nt-arrow">→</span></span>
+    </a>
+    <a class="news-ticker" href="https://peatix.com/event/5274986" target="_blank" rel="noopener" aria-label="お知らせ：iPhoneアプリ制作体験会、12月26日（土）、申込受付中 — Peatixの申込ページを開きます">
+      <span class="news-ticker-label">NEWS</span>
+      <span class="news-ticker-viewport" aria-hidden="true">
+        <span class="news-ticker-track">
+          <span class="news-ticker-half">
+            <span class="news-ticker-text"><span class="nt-short">iPhoneアプリ制作体験会 ｜ 12月26日（土）｜ 申込受付中</span><span class="nt-long">iPhoneアプリ制作体験会 ｜ 12月26日（土）13:30–16:30 ｜ くれ協働センター ｜ 申込受付中</span></span>
+            <span class="news-ticker-text"><span class="nt-short">iPhoneアプリ制作体験会 ｜ 12月26日（土）｜ 申込受付中</span><span class="nt-long">iPhoneアプリ制作体験会 ｜ 12月26日（土）13:30–16:30 ｜ くれ協働センター ｜ 申込受付中</span></span>
+          </span>
+          <span class="news-ticker-half">
+            <span class="news-ticker-text"><span class="nt-short">iPhoneアプリ制作体験会 ｜ 12月26日（土）｜ 申込受付中</span><span class="nt-long">iPhoneアプリ制作体験会 ｜ 12月26日（土）13:30–16:30 ｜ くれ協働センター ｜ 申込受付中</span></span>
+            <span class="news-ticker-text"><span class="nt-short">iPhoneアプリ制作体験会 ｜ 12月26日（土）｜ 申込受付中</span><span class="nt-long">iPhoneアプリ制作体験会 ｜ 12月26日（土）13:30–16:30 ｜ くれ協働センター ｜ 申込受付中</span></span>
           </span>
         </span>
       </span>
